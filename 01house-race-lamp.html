@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset=utf-8>
+    <title></title>
+    <script src='./lib/vue.min.js'></script>
+</head>
+
+<body>
+    <div id='app'>
+        <input type="button" value="开始" @click='start'>
+        <input type="button" value="停止" @click='stop'>
+        <br> {{msg}}
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '这是跑马灯',
+                timeID: null
+            },
+            methods: {
+                start() {
+                    //判断是否开启,防止重复开启
+                    if (this.timeID == null) {
+                        this.timeID = setInterval(() => {
+                            //取msg第一个字符赋给first
+                            var frist = this.msg.substring(0, 1);
+                            //取msg后面的字符串
+                            var end = this.msg.substring(1);
+                            //首尾相接,更新msg 
+                            this.msg = end + frist;
+                        }, 500);
+                    }
+
+                },
+                stop() {
+                    clearInterval(this.timeID);
+                    this.timeID = null;
+                    this.msg = "这是跑马灯";
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
