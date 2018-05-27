@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset=utf-8>
+    <title>按键修饰符</title>
+    <script src='./lib/vue.min.js'></script>
+</head>
+
+<body>
+    <div id='app'>
+        <!-- 在按键F2,F3,keycode=113(也是F2)抬起的时候触发add方法,这里展示3种按键修饰符的用法 -->
+        <input type="text" @keyup.F2="add" @keyup.113="add" @keyup.F3="add" v-model="msg">
+        {{msg}}
+
+    </div>
+    <script>
+        // 定义一个常量
+        const F2 = 113;
+        // Vue 自定义全局按键修饰符
+        Vue.config.keyCodes.F3=113
+        
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: "abcdefg"
+            },
+            methods: {
+                add() {
+                    this.msg+="111111";
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>
