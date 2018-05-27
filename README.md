@@ -15,4 +15,24 @@ some small vue case
     1).直接用码值  即 @keyup.113='add'   113为F2的 码值
     2).const定义 即  const F2=113
     3.Vue.config.keyup.F2=113 
-      
+
+5.自定义指令
+    全局定义:Vue.directive('指令名称 ',{
+        //指令钩子函数...如 bind,inserted,updata(主要是这3个)
+        bind:function(el,[binding]){
+
+            }
+        })
+    局部定义:
+        var vm = new Vue({
+            .....
+            .....
+            directives:{
+                指令名:{
+                    指令钩子函数:function(el,[binding]){
+
+                    }
+                }
+            }
+        })
+        值得注意的就是bind,inserted,Updata 3个钩子, 还有binding中,value和expression2个的区别

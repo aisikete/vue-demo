@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset=utf-8>
+    <title></title>
+    <script src='./lib/vue.min.js'></script>
+    <link rel="stylesheet" href="./lib/bootstrap.css">
+</head>
+
+<body>
+    <div id='app'>
+        <div class="list-inline">
+            <span>关键字:</span>
+            <!-- 自定义指令的用法,自动聚焦,改变颜色 -->
+            <input type="text" class="text-center" v-model="key" v-focu v-color="'red'">
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span>id:</span>
+            <input type="text" class="text-center" v-model="id">
+            <span>name:</span>
+            <input type="text" class="text-center" v-model="name">
+            <input type="button" value="添加" @click="add" class="btn btn-primary ">
+
+
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <th>id</th>
+                <th>名称</th>
+                <th>时间</th>
+                <th>操作</th>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) in search(key)" :key='index'>
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.time}}</td>
+                    <td>
+                        <input type="button" value="删除" @click="del(index)">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+
+        Vue.directive('color', {
+            bind: function (el, binding) {
+                console.log(binding.value);
+                console.log(binding.expression);
+                
+                el.style.color = binding.value;
+            }
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                id: null,
+                name: '',
+                key: '',
+                list: [
+                    { id: 1, name: '小明', time: new Date() },
+                    { id: 2, name: '小红', time: new Date() },
+                    { id: 3, name: '小光', time: new Date() },
+                ],
+            },
+            methods: {
+                search(key) {
+                    var newList = [];
+                    this.list.forEach(item => {
+                        if (item.id.toString() == key || item.name.indexOf(key) != -1) {
+                            newList.push(item);
+                        }
+                    })
+                    return newList;
+                },
+                del(index) {
+                    this.list.splice(index, 1);
+                },
+                query(key) {
+
+                },
+                add() {
+                    this.list.push({ id: this.id, name: this.name, time: new Date() });
+                }
+            },
+            //自定义私有指令
+            directives: {
+                focu: {
+                    //插入DOM时执行 ,el是DOM对象,使绑定的元素获得焦点
+                    inserted: function (el, binding) {
+                        el.focus();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
