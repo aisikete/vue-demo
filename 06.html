@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset=utf-8>
+    <title></title>
+    <script src='./lib/vue.min.js'></script>
+</head>
+
+<body>
+    <div id='app'>
+        <!-- 可接收父组件传来的数据,此处为title -->
+        <vue-header :title='title'></vue-header>
+        <br>
+        <!-- 组件可复用 -->
+        <vue-header></vue-header>
+        <br> {{msg}}
+        <inter-component></inter-component>
+        <br>
+
+        <!-- .$emit向父组件发送消息 -->
+        <vue-footer @add='add($event)'></vue-footer>
+        <br>
+    </div>
+    <script>
+        // 全局注册定义 
+        Vue.component('vueHeader', {
+            data() {
+                return {
+                    msg: '我是全局注册定义的头部组件,能在全部的页面使用'
+                }
+            },
+            // 传递父组件传来的数据
+            props: ['title'],
+            template: `<div>{{msg}},{{title}}</div>`
+        });
+        // 全局注册定义
+        Vue.component('vueFooter', {
+            data() {
+                return {
+                    msg: '我是全局注册定义的底部组件,能在全部的页面使用',
+                    footermsg: '我是从footer组件传来的msg'
+                }
+            },
+            template:
+                `<div>
+                    {{msg}}
+                    <input type='button' value='向父组件发消息' @click='$emit("add",footermsg)'>
+                </div>`
+
+        });
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '我是原页面',
+                title: '我是由父组件传来的title',
+            },
+            methods: {
+                add(footermsg) {
+                    alert('我是父组件的add方法,但这个按钮却是footer组件的元素,为什么footer组件能调用父组件的方法呢?');
+                    alert('甚至能拿到footer组件传来的参数footermsg:"'+footermsg+'",'+'是不是很神奇?')
+                }
+            },
+            //私有注册定义
+            components: {
+                interComponent: {
+                    data() {
+                        return {
+                            msg: '我是私有注册定义的组件,只能在本页面使用'
+                        }
+                    },
+                    template: '<div>{{msg}}</div>'
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

@@ -36,3 +36,15 @@ some small vue case
             }
         })
         值得注意的就是bind,inserted,Updata 3个钩子, 还有binding中,value和expression2个的区别
+
+6.component 组件,2种注册定义方式:全局,私有.
+    1),组件可复用 ,如案例中调用了2次vue-header组件
+    2),父组件能传递数据给父组件, 如第一个vue-header组件中的后半截信息:'我是由父组件传来的title',          vue-header组件内通过定义porps:['title'],然后在使用vue-header组件时,自定义title属性用来传递数     据,具体参照vue-header写法.
+    3),子组件能传递消息,数据给父组件,如最后一个vue-footer组件中,按钮被点击后向父组件发送了一个消息,         $emit('add',footermsg),  父组件中通过 绑定该消息即 @add='add($event)',来监听子组件是否来消息.
+        (这里出现了3个add,有点混乱,再次说明
+            $emit()中的add,是消息名,  
+            @后面的add,也是消息名,与$emit对应, 
+            @add='add($event)',单引号中的add(),是父组件中methods的方法名,
+            $emit()中的footermsg,是子组件中的数据,
+            @add='add($event)'中的$event是父组件接收子组件传来的数据,即在本例中         $event=footermsg
+        )
